@@ -17,8 +17,12 @@ def rm_ext_and_nan(CTG_features, extra_feature):
     :return: A dictionary of clean CTG called c_ctg
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
-
-    # --------------------------------------------------------------------------
+    CTG_features_no_DR=CTG_features.drop(columns=['DR'])
+    columns = list(CTG_features_no_DR)
+    c_ctg={}
+    for i in columns:
+        c_ctg[i]=pd.to_numeric(CTG_features_no_DR[i], errors='coerce').dropna().values
+        # --------------------------------------------------------------------------
     return c_ctg
 
 
@@ -31,7 +35,11 @@ def nan2num_samp(CTG_features, extra_feature):
     """
     c_cdf = {}
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
-
+    CTG_features_no_DR = CTG_features.drop(columns=['DR'])
+    columns = list(CTG_features_no_DR)
+    for i in columns:
+        # printing the third element of the column
+        c_cdf[i] = pd.to_numeric(CTG_features_no_DR[i], errors='coerce').fillna(np.random.choice(CTG_features_no_DR[i].values)).values
     # -------------------------------------------------------------------------
     return pd.DataFrame(c_cdf)
 
@@ -43,6 +51,15 @@ def sum_stat(c_feat):
     :return: Summary statistics as a dicionary of dictionaries (called d_summary) as explained in the notebook
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
+    d_summary={}
+    columns = list(c_feat)
+    for col in columns:
+        #d_summay[col]={c_feat[col].describe().iloc[1:5].to_dict()}
+        d_summary[col]={"min":c_feat[col].min(),
+                        "Q1":c_feat[col].quantile(0.25),
+                        "median": c_feat[col].median(),
+                        "Q3":c_feat[col].quantile(0.75),
+                        "max":c_feat[col].max()}
 
     # -------------------------------------------------------------------------
     return d_summary
@@ -57,7 +74,12 @@ def rm_outlier(c_feat, d_summary):
     """
     c_no_outlier = {}
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
-
+    columns = list(c_feat)
+    for col in columns:
+        IQR=d_summary[col]["Q3"]-d_summary[col]["Q1"]
+        Q_MIN=d_summary[col]["Q1"]-1.5*IQR
+        Q_MAX = d_summary[col]["Q3"] + 1.5 * IQR
+        c_no_outlier[col]=c_feat[col][(c_feat[col]>=Q_MIN) & (c_feat[col]<=Q_MAX)].values
     # -------------------------------------------------------------------------
     return pd.DataFrame(c_no_outlier)
 
@@ -71,7 +93,7 @@ def phys_prior(c_cdf, feature, thresh):
     :return: An array of the "filtered" feature called filt_feature
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:-----------------------------
-
+    filt_feature= c_cdf[feature][ c_cdf[feature] <= thresh].values
     # -------------------------------------------------------------------------
     return filt_feature
 
@@ -86,7 +108,27 @@ def norm_standard(CTG_features, selected_feat=('LB', 'ASTV'), mode='none', flag=
     :return: Dataframe of the normalized/standardazied features called nsd_res
     """
     x, y = selected_feat
+    nsd_res={}
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
-
+    columns = list(CTG_features)
+        # nsd_res[x]=(CTG_features[x].values-CTG_features[x].min())/(CTG_features[x].max()-CTG_features[x].min())
+        # nsd_res[y] = (CTG_features[y].values - CTG_features[y].min()) / (CTG_features[y].max() - CTG_features[y].min())
+    for col in columns:
+        if mode == "none":
+            nsd_res[col]=CTG_features[col].values
+        if mode == "MinMax":
+            nsd_res[col] =(CTG_features[col].values-CTG_features[col].min())/(CTG_features[col].max()-CTG_features[col].min())
+        if mode == "mean":
+            nsd_res[col] = (CTG_features[col].values - CTG_features[col].mean()) / (CTG_features[col].max() - CTG_features[col].min())
+        if mode=='standard':
+            nsd_res[col]=(CTG_features[col].values-CTG_features[col].mean())/CTG_features[col].std()
+    if flag==True:
+        nsd_res=pd.DataFrame(nsd_res)
+        nsd_res[x].hist(bins=50)
+        nsd_res[y].hist(bins=50)
+        plt.xlabel('Histogram Width')
+        plt.ylabel('Count')
+        plt.show()
     # -------------------------------------------------------------------------
     return pd.DataFrame(nsd_res)
+
