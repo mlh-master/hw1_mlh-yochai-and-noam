@@ -17,13 +17,11 @@ def rm_ext_and_nan(CTG_features, extra_feature):
     :return: A dictionary of clean CTG called c_ctg
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
-    c_ctg = {feature: pd.to_numeric(CTG_features.drop(columns=['DR'])[feature], errors='coerce').dropna().values for feature in list(CTG_features.drop(columns=['DR']))}
-
-    # CTG_features_no_DR=CTG_features.drop(columns=['DR'])
-    # columns = list(CTG_features_no_DR)
-
-    # for i in columns:
-    #     c_ctg[i]=pd.to_numeric(CTG_features_no_DR[i], errors='coerce').dropna().values
+    CTG_features_no_DR=CTG_features.drop(columns=['DR'])
+    columns = list(CTG_features_no_DR)
+    c_ctg={}
+    for i in columns:
+        c_ctg[i]=pd.to_numeric(CTG_features_no_DR[i], errors='coerce').dropna().values
         # --------------------------------------------------------------------------
     return c_ctg
 
@@ -40,6 +38,7 @@ def nan2num_samp(CTG_features, extra_feature):
     CTG_features_no_DR = CTG_features.drop(columns=['DR'])
     columns = list(CTG_features_no_DR)
     for i in columns:
+        # printing the third element of the column
         c_cdf[i] = pd.to_numeric(CTG_features_no_DR[i], errors='coerce').fillna(np.random.choice(CTG_features_no_DR[i].values)).values
     # -------------------------------------------------------------------------
     return pd.DataFrame(c_cdf)
@@ -80,9 +79,7 @@ def rm_outlier(c_feat, d_summary):
         IQR=d_summary[col]["Q3"]-d_summary[col]["Q1"]
         Q_MIN=d_summary[col]["Q1"]-1.5*IQR
         Q_MAX = d_summary[col]["Q3"] + 1.5 * IQR
-        c_no_outlier[col]=c_feat[col].values.copy()
-        c_no_outlier[col][(c_no_outlier[col]>=Q_MAX)|(c_no_outlier[col]<=Q_MIN)]=np.nan
-        #
+        c_no_outlier[col]=c_feat[col][(c_feat[col]>=Q_MIN) & (c_feat[col]<=Q_MAX)].values
     # -------------------------------------------------------------------------
     return pd.DataFrame(c_no_outlier)
 
