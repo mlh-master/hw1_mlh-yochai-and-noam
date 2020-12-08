@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30289a9e-ac69-4a96-a9dc-061561d19ec9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/HW1.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clean_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/clean_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lin_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/lin_classifier.py" afterDir="false" />
@@ -69,6 +70,7 @@
       <workItem from="1606640294926" duration="314000" />
       <workItem from="1606640758948" duration="18829000" />
       <workItem from="1607002637992" duration="5954000" />
+      <workItem from="1607416766619" duration="1689000" />
     </task>
     <servers />
   </component>
@@ -120,6 +122,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="209" y="49" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1605526945811" />
+    <state x="100" y="112" width="1200" height="584" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1607418027038">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="100" y="112" width="1200" height="584" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1607418027038" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -128,11 +134,6 @@
           <url>file://$PROJECT_DIR$/main_HW1.py</url>
           <line>37</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/clean_data.py</url>
-          <line>23</line>
-          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/HW1.py</url>
